@@ -6,17 +6,19 @@
     </div>
     <div class="MusicContent">
       <van-swipe :loop="false" :width="125" :show-indicators="false" class="my-swpie">
-        <van-swipe-item v-for="(item, id) in MusicList" :key="id" class="item">
-          <img :src="item.picUrl" alt="">
-          <span class="playCount">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-gl-play-copy"></use>
-            </svg>
-            {{ changeCount(item.playCount) }}
-          </span>
-          <div class="name">
-            <span>{{ item.name }}</span>
-          </div>
+        <van-swipe-item v-for="(item, id) in state.MusicList" :key="id" class="item">
+          <router-link :to="{ path: '/ItemMusic', query: { id: item.id } }">
+            <img :src="item.picUrl" alt="">
+            <span class="playCount">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-gl-play-copy"></use>
+              </svg>
+              {{ changeCount(item.playCount) }}
+            </span>
+            <div class="name">
+              <span>{{ item.name }}</span>
+            </div>
+          </router-link>
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -25,28 +27,27 @@
 
 <script>
 import { getMusicList } from '@/request/api/home'
+import { reactive, onMounted } from 'vue'
 export default {
-  data() {
-    return {
-      MusicList: []
-    }
-  },
-  methods: {
-    async getGnedan() {
-      let res = await getMusicList()
-      console.log(res);
-      this.MusicList = res.data.result
-    },
-    changeCount: function (num) {
+  setup() {
+    const state = reactive({
+      MusicList: [],
+    })
+
+    function changeCount(num) {
       if (num >= 100000000) {
         return (num / 100000000).toFixed(1) + '亿'
       } else if (num >= 10000) {
         return (num / 10000).toFixed(1) + '万'
       }
     }
-  },
-  mounted() {
-    this.getGnedan()
+
+    onMounted(async () => {
+      let res = await getMusicList()
+      state.MusicList = res.data.result
+    })
+
+    return { state, changeCount }
   }
 }
 </script>
@@ -116,7 +117,7 @@ export default {
         font-size: .24rem;
       }
 
-      .item{
+      .item {
         // margin: 5px;
         text-align: center;
       }
