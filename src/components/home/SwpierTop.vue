@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+//导入网易云API数据
+import { getBanner } from '@/request/api/home'
 import { onMounted, reactive } from '@vue/runtime-core';
 export default {
   setup() {
@@ -17,15 +18,9 @@ export default {
       images: []
     })
 
-    onMounted(() => {
-      axios.get('http://localhost:3000/banner?type=2')
-        .then((response) => {
-          // console.log(response);
-          state.images = response.data.banners
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    onMounted(async () => {
+      let res = await getBanner()
+      state.images = res.data.banners
     })
 
     return { state };
