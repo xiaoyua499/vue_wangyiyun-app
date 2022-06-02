@@ -9,3 +9,9 @@ export function getBanner() {
 }
 
 //获取发现好歌单数据
+export function getMusicList() {
+  return service({
+    method: "GET",
+    url: "/personalized?limit=10",
+  })
+}

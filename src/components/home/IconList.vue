@@ -40,7 +40,7 @@ export default {
   align-items: center;
   margin-top: .2rem;
   width: 100%;
-  height: 2rem;
+  height: 1rem;
 
   .iconItem{
     display: flex;
