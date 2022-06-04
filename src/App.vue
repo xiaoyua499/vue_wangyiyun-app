@@ -13,4 +13,8 @@
   width: .5rem;
   height: .5rem;
 }
+
+a{
+  color: black;
+}
 </style>
