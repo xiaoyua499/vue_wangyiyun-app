@@ -72,7 +72,7 @@
 <script>
 export default {
   setup(props) {
-    console.log(props);
+    // console.log(props);
     //判断数据是否拿到
     if (props.playlist.creator = "") {
       props.playlist.creator = JSON.parse(sessionStorage.getItem().playlist).creator
