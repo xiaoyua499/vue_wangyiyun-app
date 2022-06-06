@@ -26,7 +26,7 @@
       <ul>
         <li v-for="(item, index, id) in itemList" :key="id">
           <span class="index">{{ index + 1 }}</span>
-          <div class="song">
+          <div class="song" @click="playMusic(index)">
             <span class="songName">{{ item.name }}</span>
             <span class="songAuthor" v-for="(author, id) in item.ar" :key="id">
               {{ author.name }}
@@ -39,21 +39,31 @@
             <svg class="icon list" aria-hidden="true">
               <use xlink:href="#icon-31liebiao"></use>
             </svg>
-            
           </div>
         </li>
       </ul>
     </div>
+
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
   setup(props) {
     console.log(props);
   },
 
-  props: ['itemList', 'subscribedCount']
+  props: ['itemList', 'subscribedCount'],
+
+  methods:{
+    playMusic(index){
+      this.updatePlayList(this.itemList)
+      this.updatePlayListIndex(index)
+    },
+
+    ...mapMutations(['updatePlayList','updatePlayListIndex'])
+  }
 }
 </script>
 
@@ -89,7 +99,7 @@ export default {
 
       div {
         font-size: .24rem;
-        color: #ccc;
+        color: #999;
       }
     }
 
@@ -142,7 +152,7 @@ export default {
           .songAuthor{
             margin-right: 10px;
             font-size: 12px;
-            color: #ccc;
+            color: #999;
           }
         }
 
@@ -152,7 +162,7 @@ export default {
           float: right;
           height: 100%;
           line-height: 50px;
-          fill: #ccc;
+          fill: #999;
 
           .list{
             margin-left: 10px;
