@@ -1,6 +1,6 @@
 <template>
   <div class="FootMusic">
-    <div class="footLeft">
+    <div class="footLeft" @click="updateDetailShow">
       <img :src="playList[playListIndex].al.picUrl" alt="">
       <div>
         <p>{{ playList[playListIndex].name }}</p>
@@ -19,17 +19,21 @@
       </svg>
     </div>
     <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
+    <van-popup v-model:show="detailShow" position="bottom" :style="{ height: '100%', width: '100%' }">
+      <MusicDetail :musicList="playList[playListIndex]"/>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex'
+import MusicDetail from './MusicDetail.vue';
 export default {
   computed: {
-    ...mapState(['playList', 'playListIndex','isbtnShow'])
+    ...mapState(['playList', 'playListIndex', 'isbtnShow', 'detailShow'])
   },
   mounted() {
-    console.log(this.$refs);
+    // console.log(this.$refs);
   },
   methods: {
     play() {
@@ -42,17 +46,28 @@ export default {
         this.updateIsbtnShow(true)
       }
     },
-    ...mapMutations(['updateIsbtnShow'])
+    ...mapMutations(['updateIsbtnShow', 'updateDetailShow'])
   },
 
-  watch:{
+  watch: {
     //监听歌曲是否改变 如果改变 自动播放当前歌曲
-    playListIndex(){
+    playListIndex() {
       this.$refs.audio.autoplay = true
       if (this.$refs.audio.paused) {
         this.updateIsbtnShow(false)
       }
+    },
+
+    playList() {
+      if (this.isbtnShow) {
+        this.$refs.audio.autoplay = true
+        this.updateIsbtnShow(false)
+      }
     }
+  },
+
+  components:{
+    MusicDetail
   }
 }
 </script>

@@ -6,6 +6,8 @@
       </van-swipe-item>
     </van-swipe>
   </div>
+  <div>
+  </div>
 </template>
 
 <script>
@@ -13,6 +15,7 @@
 import { getBanner } from '@/request/api/home'
 import { onMounted, reactive } from '@vue/runtime-core';
 export default {
+  
   setup() {
     const state = reactive({
       images: []
