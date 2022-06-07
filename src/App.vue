@@ -4,12 +4,8 @@
 </template>
 
 <script>
-import FooterMusic from './components/Item/FooterMusic.vue'
+import FooterMusic from '@/components/Item/FooterMusic.vue'
 export default {
-  setup() {
-    
-  },
-
   components:{FooterMusic}
 }
 </script>
