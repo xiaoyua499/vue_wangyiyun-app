@@ -20,7 +20,7 @@
     </div>
     <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
     <van-popup v-model:show="detailShow" position="bottom" :style="{ height: '100%', width: '100%' }">
-      <MusicDetail :musicList="playList[playListIndex]"/>
+      <MusicDetail :musicList="playList[playListIndex]" :play="play" :isbtnShow="isbtnShow"/>
     </van-popup>
   </div>
 </template>
@@ -35,6 +35,9 @@ export default {
   mounted() {
     // console.log(this.$refs);
   },
+  updated(){ 
+    this.$store.dispatch('getLyric',this.playList[this.playListIndex].id)
+  },  
   methods: {
     play() {
       //判断音乐是否正在播放
@@ -66,7 +69,7 @@ export default {
     }
   },
 
-  components:{
+  components: {
     MusicDetail
   }
 }

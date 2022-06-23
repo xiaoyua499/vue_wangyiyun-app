@@ -26,7 +26,7 @@ export default {
       //获取歌单歌曲
       let result = await getItemList(id)
       state.itemList = result.data.songs
-      console.log(result.data.songs);
+      // console.log(result.data.songs);
       //防止页面刷新,数据丢失
       sessionStorage.setItem('itemDetail', JSON.stringify(state))
     })
