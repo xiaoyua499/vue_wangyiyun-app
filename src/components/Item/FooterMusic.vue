@@ -20,7 +20,7 @@
     </div>
     <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
     <van-popup v-model:show="detailShow" position="bottom" :style="{ height: '100%', width: '100%' }">
-      <MusicDetail :musicList="playList[playListIndex]" :play="play" :isbtnShow="isbtnShow"/>
+      <MusicDetail :musicList="playList[playListIndex]" :play="play" :isbtnShow="isbtnShow" :addDuration="addDuration"/>
     </van-popup>
   </div>
 </template>
@@ -29,27 +29,46 @@
 import { mapMutations, mapState } from 'vuex'
 import MusicDetail from './MusicDetail.vue';
 export default {
+  data() {
+    return {
+      interVal: 0
+    }
+  },
   computed: {
     ...mapState(['playList', 'playListIndex', 'isbtnShow', 'detailShow'])
   },
   mounted() {
     // console.log(this.$refs);
+    // this.$store.dispatch('getLyric', this.playList[this.playListIndex].id)
+    this.updateTime()
   },
-  updated(){ 
-    this.$store.dispatch('getLyric',this.playList[this.playListIndex].id)
-  },  
+  updated() {
+    this.$store.dispatch('getLyric', this.playList[this.playListIndex].id)
+    this.addDuration()
+  },
   methods: {
     play() {
       //判断音乐是否正在播放
       if (this.$refs.audio.paused) {
         this.$refs.audio.play()
         this.updateIsbtnShow(false)
+        this.updateTime() // 调用定时器
       } else {
         this.$refs.audio.pause()
         this.updateIsbtnShow(true)
+        clearInterval(this.interVal) //清楚定时器
       }
     },
-    ...mapMutations(['updateIsbtnShow', 'updateDetailShow'])
+    //传入总时间
+    addDuration(){
+      this.updateDuration(this.$refs.audio.duration)
+    },
+    updateTime() {
+      this.interVal = setInterval(() => {
+        this.updateCurrentTime(this.$refs.audio.currentTime)
+      }, 1000)
+    },
+    ...mapMutations(['updateIsbtnShow', 'updateDetailShow', 'updateCurrentTime', 'updateDuration'])
   },
 
   watch: {
