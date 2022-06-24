@@ -5,10 +5,9 @@
   <div class="detailTop">
     <!-- 退出and歌曲详情 -->
     <div class="detailTopLeft">
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="updateDetailShow">
         <use xlink:href="#icon-zuojiantou"></use>
       </svg>
-
       <div class="authorDetail">
         <!-- 歌名跑马灯效果 -->
         <Vue3Marquee>
@@ -23,7 +22,6 @@
             <use xlink:href="#icon-youjiantou"></use>
           </svg>
         </div>
-
       </div>
     </div>
 
@@ -36,22 +34,81 @@
     </div>
   </div>
   <!-- 中间圆盘与指针部分 -->
-  <div class="datailContent">
-    <img src="@/assets/指针.png" alt="" class="img_needle">
+  <div class="datailContent" v-show="isLyricShow">
+    <img src="@/assets/指针.png" alt="" class="img_needle" :class="{ img_needle_active: !isbtnShow }" />
     <img src="@/assets/圆盘.png" alt="" class="img_cd">
-    <img :src="musicList.al.picUrl" alt="" class="img_ar">
+    <img :src="musicList.al.picUrl" alt="" class="img_ar" :class="{img_ar_active:!isbtnShow,img_ar_paused:isbtnShow}" />
+  </div>
+  <!-- 歌词 -->
+  <div class="musicLyric">
+    {{lyricList.lyric}}
+  </div>
+  <!-- 底部 -->
+  <div class="dataillFooer">
+    <div class="footerTop">
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-aixin"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-iconfontzhizuobiaozhun023146"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-yinlechangpian"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-xiaoxi"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-liebiao-"></use>
+      </svg>
+    </div>
+    <!-- 进度条 -->
+    <div class="pmgressbar"></div>
+    <!-- 切换 -->
+    <div class="switchButton">
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-xunhuan"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-shangyishoushangyige"></use>
+      </svg>
+      <svg class="icon play" aria-hidden="true" v-if="isbtnShow" @click="play">
+        <use xlink:href="#icon-bofang"></use>
+      </svg>
+      <svg class="icon play" aria-hidden="true" v-else @click="play">
+        <use xlink:href="#icon-zanting"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-xiayigexiayishou"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-zu"></use>
+      </svg>
+    </div>
   </div>
 </template>
 
 <script>
 import { Vue3Marquee } from 'vue3-marquee'
 import 'vue3-marquee/dist/style.css'
+import { mapMutations, mapState } from 'vuex';
 
 export default {
+  data(){
+    return{
+      isLyricShow:false
+    }
+  },
+  computed:{
+    ...mapState(["lyricList"])
+  },  
   mounted() {
     console.log(this.musicList);
   },
-  props: ['musicList'],
+  methods: {
+    ...mapMutations(['updateDetailShow'])
+  },
+  props: ['musicList', 'isbtnShow', 'play'],
   components: {
     Vue3Marquee,
   },
@@ -111,7 +168,7 @@ export default {
           font-size: .24rem;
           height: .24rem;
           line-height: .24rem;
-          color: #999;
+          color: #555;
         }
 
         .icon {
@@ -143,7 +200,17 @@ export default {
     position: absolute;
     left: 46%;
     transform-origin: 0 0;
-    transform: rotate(-10deg);
+    transform: rotate(-15deg);
+    transition: all 2s;
+    width: 2rem;
+    height: 3rem;
+  }
+
+  .img_needle_active {
+    position: absolute;
+    left: 46%;
+    transform-origin: 0 0;
+    transform: rotate(0deg);
     transition: all 2s;
     width: 2rem;
     height: 3rem;
@@ -163,6 +230,64 @@ export default {
     width: 3.2rem;
     height: 3.2rem;
     border-radius: 50%;
+    animation: rotate_ar 10s linear infinite;
+  }
+
+  //为中间圆盘添加旋转动画
+  .img_ar_active {
+    animation-play-state: running;
+  }
+
+  .img_ar_paused {
+    animation-play-state: paused;
+  }
+
+  @keyframes rotate_ar {
+    0% {
+      transform: rotateZ(0deg);
+    }
+
+    100% {
+      transform: rotateZ(360deg);
+    }
+  }
+  //为中间圆盘添加旋转动画
+}
+
+//底部
+.dataillFooer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3rem;
+
+  .footerTop {
+    display: flex;
+    justify-content: space-around;
+
+    .icon {
+      width: .4rem;
+      height: .4rem;
+      fill: #fff;
+    }
+  }
+
+  .switchButton {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .icon {
+      width: .4rem;
+      height: .4rem;
+      fill: #fff;
+    }
+
+    .play {
+      width: .65rem;
+      height: .65rem;
+    }
   }
 }
 </style>
