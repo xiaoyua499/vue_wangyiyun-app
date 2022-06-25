@@ -5,7 +5,7 @@
   <div class="detailTop">
     <!-- 退出and歌曲详情 -->
     <div class="detailTopLeft">
-      <svg class="icon" aria-hidden="true" @click="updateDetailShow">
+      <svg class="icon" aria-hidden="true" @click="backHome">
         <use xlink:href="#icon-zuojiantou"></use>
       </svg>
       <div class="authorDetail">
@@ -24,8 +24,6 @@
         </div>
       </div>
     </div>
-
-
     <!-- 分享 -->
     <div class="detailTopRight">
       <svg class="icon" aria-hidden="true">
@@ -34,14 +32,18 @@
     </div>
   </div>
   <!-- 中间圆盘与指针部分 -->
-  <div class="datailContent" v-show="isLyricShow">
+  <div class="datailContent" v-show="!isLyricShow" @click="isLyricShow = true">
     <img src="@/assets/指针.png" alt="" class="img_needle" :class="{ img_needle_active: !isbtnShow }" />
     <img src="@/assets/圆盘.png" alt="" class="img_cd">
-    <img :src="musicList.al.picUrl" alt="" class="img_ar" :class="{img_ar_active:!isbtnShow,img_ar_paused:isbtnShow}" />
+    <img :src="musicList.al.picUrl" alt="" class="img_ar"
+      :class="{ img_ar_active: !isbtnShow, img_ar_paused: isbtnShow }" />
   </div>
   <!-- 歌词 -->
-  <div class="musicLyric">
-    {{lyricList.lyric}}
+  <div class="musicLyric" ref="musicLyric" v-show="isLyricShow" @click="isLyricShow = false">
+    <p v-for="item in lyric" :key="item"
+      :class="{ active: (currentTime * 1000 >= item.time && currentTime * 1000 < item.pre) }">
+      {{ item.lrc }}
+    </p>
   </div>
   <!-- 底部 -->
   <div class="dataillFooer">
@@ -63,13 +65,15 @@
       </svg>
     </div>
     <!-- 进度条 -->
-    <div class="pmgressbar"></div>
+    <div class="pmgressbar">
+      <input type="range" min="0" :max="duration" v-model="currentTime" step="0.05">
+    </div>
     <!-- 切换 -->
     <div class="switchButton">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-xunhuan"></use>
       </svg>
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="goPlay(-1)">
         <use xlink:href="#icon-shangyishoushangyige"></use>
       </svg>
       <svg class="icon play" aria-hidden="true" v-if="isbtnShow" @click="play">
@@ -78,7 +82,7 @@
       <svg class="icon play" aria-hidden="true" v-else @click="play">
         <use xlink:href="#icon-zanting"></use>
       </svg>
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="goPlay(1)">
         <use xlink:href="#icon-xiayigexiayishou"></use>
       </svg>
       <svg class="icon" aria-hidden="true">
@@ -94,24 +98,93 @@ import 'vue3-marquee/dist/style.css'
 import { mapMutations, mapState } from 'vuex';
 
 export default {
-  data(){
-    return{
-      isLyricShow:false
+  data() {
+    return {
+      isLyricShow: false
     }
   },
-  computed:{
-    ...mapState(["lyricList"])
-  },  
+  computed: {
+    ...mapState(["lyricList", 'currentTime', 'playList', 'playListIndex', 'duration']),
+    //歌词
+    lyric() {
+      let arr
+      if (this.lyricList.lyric) {
+        arr = this.lyricList.lyric.split(/[(\r\n)\r\n]+/).map((item, i) => {
+          //分别切割出 分、秒、毫秒、歌词
+          let min = item.slice(1, 3)
+          let sec = item.slice(4, 6)
+          let mill = item.slice(7, 10)
+          let lrc = item.slice(11, item.length)
+          let time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+          if (isNaN(Number(mill))) {
+            mill = item.slice(7, 9)
+            lrc = item.slice(10, item.lemgth)
+            time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill)
+          }
+          // console.log(min,sec,mill,lrc);
+          return { min, sec, mill, lrc, time }
+        })
+        arr.forEach((item, i) => {
+          if (i === arr.length - 1 || isNaN(arr[i + 1].time)) {
+            item.pre = 100000
+          } else {
+            item.pre = arr[i + 1].time
+          }
+        })
+      }
+      // console.log(arr);
+      return arr
+    }
+  },
   mounted() {
-    console.log(this.musicList);
+    // console.log(this.musicList);
+    this.addDuration()
   },
   methods: {
-    ...mapMutations(['updateDetailShow'])
+    //退出主页面
+    backHome() {
+      this.isLyricShow = false
+      this.updateDetailShow()
+    },
+    //歌曲切换
+    goPlay(val) {
+      let index = this.playListIndex + val
+      if (index < 0) {
+        index = this.playList.length - 1
+      } else if (index == this.playList.length) {
+        index = 0
+      }
+      this.updatePlayListIndex(index)
+      // console.log(index);
+    },
+    ...mapMutations(['updateDetailShow', 'updatePlayListIndex'])
   },
-  props: ['musicList', 'isbtnShow', 'play'],
+  props: ['musicList', 'isbtnShow', 'play', 'addDuration'],
   components: {
     Vue3Marquee,
   },
+  watch: {
+    //歌词样式突出显示
+    currentTime(newValue) {
+      let p = document.querySelector("p.active")
+      // console.log([p]);
+      if (p === null) {
+        return
+      } else if (p.offsetTop > 273) {
+        this.$refs.musicLyric.scrollTop = p.offsetTop - 273
+      }
+      //播放结束自动播放下一首
+      if (newValue === this.duration) {
+        if (this.playListIndex === this.playList.lemgth - 1) {
+          this.updatePlayListIndex(0)
+          this.play()
+        } else {
+          this.updatePlayListIndex(this.playListIndex + 1)
+        }
+      }
+      // console.log(newValue,this.duration);
+    }
+  }
 }
 </script>
 
@@ -251,14 +324,33 @@ export default {
       transform: rotateZ(360deg);
     }
   }
+
   //为中间圆盘添加旋转动画
+}
+
+//歌词
+.musicLyric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 9rem;
+  overflow: scroll;
+
+  p {
+    padding: .5rem;
+    padding-top: 0;
+    color: rgb(179, 175, 175);
+  }
+
+  .active {
+    color: #fff;
+    font-size: .5rem;
+  }
 }
 
 //底部
 .dataillFooer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
   width: 100%;
   height: 3rem;
 
@@ -270,6 +362,15 @@ export default {
       width: .4rem;
       height: .4rem;
       fill: #fff;
+    }
+  }
+
+  .pmgressbar {
+    input {
+      margin-top: .6rem;
+      margin-bottom: .6rem;
+      width: 100%;
+      height: .06rem;
     }
   }
 
@@ -285,8 +386,8 @@ export default {
     }
 
     .play {
-      width: .65rem;
-      height: .65rem;
+      width: .8rem;
+      height: .8rem;
     }
   }
 }
