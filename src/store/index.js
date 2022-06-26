@@ -50,9 +50,14 @@ export default createStore({
       state.currentTime = value
       // console.log(state.currentTime);
     },
+    //获取歌曲总时长
     updateDuration(state, value){
       state.duration=value
-    }
+    },
+    //搜索列表歌曲播放
+    pushPlayList(state, value){
+      state.playList.push(value)
+    },
   },
   actions: {
     getLyric: async function (context, value) {
