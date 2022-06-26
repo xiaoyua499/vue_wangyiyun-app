@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import store from '@/store/index'
 
 const routes = [
   {
@@ -24,12 +25,42 @@ const routes = [
     path: '/search',
     name: 'Search',
     component: () => import(/* webpackChunkName: "Search" */ '../views/Search.vue')
-  }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "Login" */ '../views/Login.vue')
+  },
+  {
+    path: '/infoUser',
+    name: 'InfoUser',
+    beforeEnter: (to, from, next) => {
+      if (store.state.isLogin) {
+        next()
+      } else {
+        next('/login')
+      }
+    },
+    component: () => import(/* webpackChunkName: "InfoUser" */ '../views/InfoUser.vue')
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+//全局路由守卫
+router.beforeEach((to, from) => {
+  if (to.path == '/login') {
+    store.state.isFooterMusic = false
+  } else {
+    store.state.isFooterMusic = true
+  }
+  if (to.path == '/search' || to.path == '/ItemMusic' || to.path == '/login') {
+    store.state.isTopNav = false
+  } else {
+    store.state.isTopNav = true
+  }
 })
 
 export default router
