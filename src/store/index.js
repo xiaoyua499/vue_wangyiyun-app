@@ -20,7 +20,10 @@ export default createStore({
     detailShow: false, //歌曲详情页是否显示
     lyricList: {}, //歌词
     currentTime: 0, //当前时间
-    duration:0.//歌曲总时长
+    duration:0,//歌曲总时长
+    isLogin:false,//判断是否登录
+    isFooterMusic:true,//是否显示底部组件
+    isTopNav:true,//是否显示头部导航栏
   },
   getters: {
   },

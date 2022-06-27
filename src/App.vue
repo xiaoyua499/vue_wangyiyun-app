@@ -1,12 +1,14 @@
 <template>
+<TopNav v-show="$store.state.isTopNav"/>
   <router-view />
-  <FooterMusic/>
+  <FooterMusic v-show="$store.state.isFooterMusic"/>
 </template>
 
 <script>
 import FooterMusic from '@/components/Item/FooterMusic.vue'
+import TopNav from '@/components/home/TopNav.vue'
 export default {
-  components:{FooterMusic}
+  components: { FooterMusic,TopNav}
 }
 </script>
 
@@ -22,7 +24,7 @@ export default {
   height: .5rem;
 }
 
-a{
+a {
   color: black;
 }
 </style>
