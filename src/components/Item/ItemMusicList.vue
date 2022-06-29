@@ -51,7 +51,7 @@
 import { mapMutations } from 'vuex';
 export default {
   setup(props) {
-    // console.log(props);
+    // console.log(props.subscribedCount);
   },
 
   props: ['itemList', 'subscribedCount'],

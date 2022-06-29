@@ -23,3 +23,19 @@ export function getSearchMusic(data) {
     url: `/cloudsearch?keywords=${data}`,
   })
 }
+
+//登录
+export function getPhoneLogin(data) {
+  return service({
+    method: "GET",
+    url: `/login/cellphone?phone=${data.phone}&password=${data.password}`,
+  })
+}
+
+//获取用户详情
+export function getUid(data) {
+  return service({
+    method: "GET",
+    url: `/user/detail?uid=${data}`,
+  })
+}

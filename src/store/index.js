@@ -1,3 +1,4 @@
+import { getPhoneLogin } from '@/request/api/home'
 import { getmusicLyric } from '@/request/api/Item'
 import { createStore } from 'vuex'
 
@@ -20,10 +21,17 @@ export default createStore({
     detailShow: false, //歌曲详情页是否显示
     lyricList: {}, //歌词
     currentTime: 0, //当前时间
-    duration:0,//歌曲总时长
-    isLogin:false,//判断是否登录
-    isFooterMusic:true,//是否显示底部组件
-    isTopNav:true,//是否显示头部导航栏
+    duration: 0,//歌曲总时长
+    isLogin: false,//判断是否登录
+    isFooterMusic: true,//是否显示底部组件
+    isTopNav: true,//是否显示头部导航栏
+    token: "",//保存token
+    user: {
+      data:{
+        profile:{},
+      }
+    },//用户信息
+    
   },
   getters: {
   },
@@ -35,6 +43,8 @@ export default createStore({
     //是否播放
     updatePlayList(state, value) {
       state.playList = value
+      // console.log(state);
+      
     },
     //歌曲下标
     updatePlayListIndex(state, value) {
@@ -54,20 +64,40 @@ export default createStore({
       // console.log(state.currentTime);
     },
     //获取歌曲总时长
-    updateDuration(state, value){
-      state.duration=value
+    updateDuration(state, value) {
+      state.duration = value
     },
     //搜索列表歌曲播放
-    pushPlayList(state, value){
+    pushPlayList(state, value) {
       state.playList.push(value)
+    },
+    //登录
+    updataIsLogin(state, value) {
+      state.isLogin = value
+    },
+    //保存token
+    updataToken(state, value) {
+      state.token = value
+      sessionStorage.setItem('token', state.token)
+    },
+    //用户信息
+    updataUser(state, value) {
+      state.user = value
     },
   },
   actions: {
+    //歌词
     getLyric: async function (context, value) {
       let res = await getmusicLyric(value)
       // console.log(res);
       context.commit("updateLyricList", res.data.lrc)
-    }
+    },
+    //登录
+    getLogin: async function (context, value) {
+      let res = await getPhoneLogin(value)
+      // console.log(res);
+      return res
+    },
   },
   modules: {
   }
