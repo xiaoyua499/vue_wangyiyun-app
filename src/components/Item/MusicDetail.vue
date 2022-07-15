@@ -108,7 +108,7 @@ import { mapMutations, mapState } from 'vuex';
 export default {
   data() {
     return {
-      isLyricShow: false
+      isLyricShow: false,
     }
   },
   computed: {
@@ -142,7 +142,7 @@ export default {
       }
       // console.log(arr);
       return arr
-    }
+    },
   },
   mounted() {
     // console.log(this.musicList);
@@ -165,15 +165,15 @@ export default {
       this.updatePlayListIndex(index)
       // console.log(index);
     },
-    ...mapMutations(['updateDetailShow', 'updatePlayListIndex'])
+    ...mapMutations(['updateDetailShow', 'updatePlayListIndex', 'updateCurrentTime'])
   },
   props: ['musicList', 'isbtnShow', 'play', 'addDuration'],
   components: {
     Vue3Marquee,
   },
   watch: {
-    //歌词样式突出显示
     currentTime(newValue) {
+      //歌词样式突出显示
       let p = document.querySelector("p.active")
       // console.log([p]);
       if (p === null) {
@@ -191,6 +191,7 @@ export default {
           this.updatePlayListIndex(this.playListIndex + 1)
         }
       }
+      this.updateCurrentTime(newValue)
       // console.log(newValue,this.duration);
     }
   }
@@ -346,9 +347,11 @@ export default {
 
   //歌词
   .musicLyric-box {
+    margin-top: 55px;
     width: 100%;
-    height: 9rem;
+    height: 9.2rem;
     z-index: -1;
+    overflow: scroll;
 
     .musicLyric {
       display: flex;
@@ -356,8 +359,8 @@ export default {
       align-items: center;
       margin-top: 1.5rem;
       width: 100%;
-      height: 9rem;
-      overflow: scroll;
+      // height: 9rem;
+
       transition: all .8s linear;
       z-index: -1;
 
