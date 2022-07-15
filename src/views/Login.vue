@@ -5,7 +5,6 @@
     <div class="loginBottom">
       <p>账号：<input type="text" name="phone" class="phone" placeholder="请输入QQ/微信/手机号码" v-model="phone" /></p>
       <p>密码：<input type="password" name="passworld" class="passworld" placeholder="请输入密码" v-model="password" /></p>
-
       <button class="btn" @click="Login">登录</button>
     </div>
   </div>

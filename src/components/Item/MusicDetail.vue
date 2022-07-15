@@ -42,11 +42,13 @@
         :class="{ img_ar_active: !isbtnShow, img_ar_paused: isbtnShow }" />
     </div>
     <!-- 歌词 -->
-    <div class="musicLyric" ref="musicLyric" v-show="isLyricShow" @click="isLyricShow = false">
-      <p v-for="item in lyric" :key="item"
-        :class="{ active: (currentTime * 1000 >= item.time && currentTime * 1000 < item.pre) }">
-        {{ item.lrc }}
-      </p>
+    <div class="musicLyric-box">
+      <div class="musicLyric" ref="musicLyric" v-show="isLyricShow" @click="isLyricShow = false">
+        <p v-for="item in lyric" :key="item"
+          :class="{ active: (currentTime * 1000 >= item.time && currentTime * 1000 < item.pre) }">
+          {{ item.lrc }}
+        </p>
+      </div>
     </div>
     <!-- 底部 -->
     <div class="dataillFooer">
@@ -197,6 +199,7 @@ export default {
 
 <style lang="less" scoped>
 .MusicBody {
+
   // 背景
   .bgimg {
     position: fixed;
@@ -218,7 +221,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgb(54, 54, 54);
 
     .detailTopLeft {
       display: flex;
@@ -343,29 +345,35 @@ export default {
   }
 
   //歌词
-  .musicLyric {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 1.5rem;
+  .musicLyric-box {
     width: 100%;
     height: 9rem;
-    // overflow: scroll;
-    transition: all .8s linear;
     z-index: -1;
 
-    p {
-      padding: .5rem;
-      padding-top: 0;
-      color: rgb(179, 175, 175);
-      transition: all .1s linear;
-    }
+    .musicLyric {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1.5rem;
+      width: 100%;
+      height: 9rem;
+      overflow: scroll;
+      transition: all .8s linear;
+      z-index: -1;
 
-    .active {
-      color: #fff;
-      font-size: .32rem;
-      // transform: translateY(90px);
-      transition: all .1s linear;
+      p {
+        padding: .5rem;
+        padding-top: 0;
+        color: rgb(179, 175, 175);
+        transition: all .1s linear;
+      }
+
+      .active {
+        color: #fff;
+        font-size: .32rem;
+        // transform: translateY(90px);
+        transition: all .1s linear;
+      }
     }
   }
 
@@ -377,7 +385,6 @@ export default {
     padding: .2rem;
     width: 100%;
     height: 3rem;
-    background-color: rgb(54, 54, 54);
 
     .footerTop {
       display: flex;
