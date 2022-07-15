@@ -6,8 +6,8 @@
       </svg>
     </div>
     <div class="topContent">
-      <span @click="$router.push('/infoUser')">我的</span>
-      <span class="active">发现</span>
+      <span @click="[$router.push('/infoUser'), activeing()]">我的</span>
+      <span id="active" @click="[$router.push('/'), activeing()]">发现</span>
       <span>云村</span>
       <span>视频</span>
     </div>
@@ -16,13 +16,34 @@
         <use xlink:href="#icon-sousuo"></use>
       </svg>
     </div>
-    
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
 
+    }
+  },
+  mounted() {
+    // document.getElementById('active').className = 'active'
+  },
+  methods: {
+    //动态获取active样式
+    activeing() {
+      // 获取所有元素
+      var spans = document.getElementsByTagName('span');
+      for (var i = 0; i < spans.length; i++) {
+        spans[i].onclick = function () {
+          for (var i = 0; i < spans.length; i++) {
+            spans[i].className = '';
+          }
+          this.className = 'active';
+        }
+      }
+    }
+  }
 }
 </script>
 

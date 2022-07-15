@@ -27,11 +27,11 @@ export default createStore({
     isTopNav: true,//是否显示头部导航栏
     token: "",//保存token
     user: {
-      data:{
-        profile:{},
+      data: {
+        profile: {},
       }
     },//用户信息
-    
+
   },
   getters: {
   },
@@ -44,7 +44,6 @@ export default createStore({
     updatePlayList(state, value) {
       state.playList = value
       // console.log(state);
-      
     },
     //歌曲下标
     updatePlayListIndex(state, value) {
@@ -83,6 +82,9 @@ export default createStore({
     //用户信息
     updataUser(state, value) {
       state.user = value
+      sessionStorage.setItem('user', JSON.stringify(state.user))
+      // console.log(state.user);
+
     },
   },
   actions: {
