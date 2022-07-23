@@ -26,6 +26,7 @@ export default createStore({
     isFooterMusic: true,//是否显示底部组件
     isTopNav: true,//是否显示头部导航栏
     token: "",//保存token
+    // sidebarShow:false, //侧边栏是否显示
     user: {
       data: {
         profile: {},
@@ -84,8 +85,10 @@ export default createStore({
       state.user = value
       sessionStorage.setItem('user', JSON.stringify(state.user))
       // console.log(state.user);
-
     },
+    // updataSidebarShow(state,value){
+    //   state.sidebarShow = value
+    // }
   },
   actions: {
     //歌词
