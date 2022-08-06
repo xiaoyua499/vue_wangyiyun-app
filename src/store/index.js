@@ -22,16 +22,17 @@ export default createStore({
     lyricList: {}, //歌词
     currentTime: 0, //当前时间
     duration: 0,//歌曲总时长
+    changeTime: 0,//改变后的时间
     isLogin: false,//判断是否登录
     isFooterMusic: true,//是否显示底部组件
-    isTopNav: true,//是否显示头部导航栏
+    tapbar: true,//是否显示底部导航栏
     token: "",//保存token
-    // sidebarShow:false, //侧边栏是否显示
+    //用户信息
     user: {
       data: {
         profile: {},
       }
-    },//用户信息
+    },
 
   },
   getters: {
@@ -61,11 +62,20 @@ export default createStore({
     //当前时间
     updateCurrentTime(state, value) {
       state.currentTime = value
-      // console.log(state.currentTime);
+      // console.log(value);
+    },
+    //更新歌曲改变后的时间
+    updataChangeTime(state, value) {
+      state.changeTime = value
     },
     //获取歌曲总时长
     updateDuration(state, value) {
-      state.duration = value
+      if (isNaN(value)) {
+        value = 200
+      } else {
+        state.duration = value
+      }
+      // console.log(state.duration);
     },
     //搜索列表歌曲播放
     pushPlayList(state, value) {
@@ -86,9 +96,7 @@ export default createStore({
       sessionStorage.setItem('user', JSON.stringify(state.user))
       // console.log(state.user);
     },
-    // updataSidebarShow(state,value){
-    //   state.sidebarShow = value
-    // }
+
   },
   actions: {
     //歌词

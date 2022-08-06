@@ -7,37 +7,39 @@
     <input type="text" :placeholder="placeholder" v-model="searchKey" @keydown.enter="enterKey">
     <span @click="enterKey">搜索</span>
   </div>
-  <!-- 搜索历史 -->
-  <div class="searchHistory">
-    <span class="history">历史</span>
-    <span v-for="item in keyWorldList" :key="item" class="spanKey" @click="searchHistory(item)">
-      {{ item }}
-    </span>
-    <svg class="icon" aria-hidden="true" @click="delHistory">
-      <use xlink:href="#icon-shanchu"></use>
-    </svg>
-  </div>
-  <!-- 歌曲列表 -->
-  <div class="listBottom">
-    <ul>
-      <li v-for="(item, index, id) in searchList" :key="id">
-        <span class="index">{{ index + 1 }}</span>
-        <div class="song" @click="updateIndex(item,index)">
-          <span class="songName">{{ item.name }}</span>
-          <span class="songAuthor" v-for="(author, id) in item.ar" :key="id">
-            {{ author.name }}
-          </span>
-        </div>
-        <div class="listBottom-right">
-          <svg class="icon MV" aria-hidden="true" v-show="item.mv != 0">
-            <use xlink:href="#icon-shipin"></use>
-          </svg>
-          <svg class="icon list" aria-hidden="true">
-            <use xlink:href="#icon-31liebiao"></use>
-          </svg>
-        </div>
-      </li>
-    </ul>
+  <div class="searchBottom">
+    <!-- 搜索历史 -->
+    <div class="searchHistory">
+      <span class="history">历史</span>
+      <span v-for="item in keyWorldList" :key="item" class="spanKey" @click="searchHistory(item)">
+        {{ item }}
+      </span>
+      <svg class="icon" aria-hidden="true" @click="delHistory">
+        <use xlink:href="#icon-shanchu"></use>
+      </svg>
+    </div>
+    <!-- 歌曲列表 -->
+    <div class="listBottom">
+      <ul>
+        <li v-for="(item, index, id) in searchList" :key="id">
+          <span class="index">{{ index + 1 }}</span>
+          <div class="song" @click="updateIndex(item, index)">
+            <span class="songName">{{ item.name }}</span>
+            <span class="songAuthor" v-for="(author, id) in item.ar" :key="id">
+              {{ author.name }}
+            </span>
+          </div>
+          <div class="listBottom-right">
+            <svg class="icon MV" aria-hidden="true" v-show="item.mv != 0">
+              <use xlink:href="#icon-shipin"></use>
+            </svg>
+            <svg class="icon list" aria-hidden="true">
+              <use xlink:href="#icon-31liebiao"></use>
+            </svg>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -85,14 +87,12 @@ export default {
     searchHistory: async function (item) {
       let res = await getSearchMusic(item)
       this.searchList = res.data.result.songs
-      console.log(this.searchList);
+      // console.log(this.searchList);
     },
     //歌曲播放
-    updateIndex(item){
-      // item.al=item.album
-      // item.al.picUrl=item.album.artist.img1v1Url
-      this.$store.commit("pushPlayList",item)
-      this.$store.commit("updatePlayListIndex",this.$store.state.playList.length-1)
+    updateIndex(item) {
+      this.$store.commit("pushPlayList", item)
+      this.$store.commit("updatePlayListIndex", this.$store.state.playList.length - 1)
     },
   },
 }
@@ -100,11 +100,15 @@ export default {
 
 <style lang="less" scoped>
 .searchTop {
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
+  padding: 0 10px;
   width: 100%;
   height: 50px;
-  padding: 0 10px;
+
 
   input {
     margin-left: 20px;
@@ -114,93 +118,100 @@ export default {
     width: 75%;
   }
 
-  span{
-    margin-left:10px ;
+  span {
+    margin-left: 10px;
     font-size: 16px;
   }
 }
 
-.searchHistory {
-  position: relative;
+.searchBottom {
+  margin-top: 50px;
+  overflow: scroll;
   width: 100%;
-  padding: 10px;
+  height: 12rem;
 
-  .history {
-    display: block;
-    font-size: 16px;
-    font-weight: 700;
+  .searchHistory {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    .history {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .spanKey {
+      display: inline-block;
+      margin: 5px 10px;
+      padding: 5px 10px;
+      background-color: rgb(172, 172, 172);
+      border-radius: 25px;
+      color: #fff;
+    }
+
+    .icon {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      width: 15px;
+      height: 15px;
+    }
   }
 
-  .spanKey {
-    display: inline-block;
-    margin: 5px 10px;
-    padding: 5px 10px;
-    background-color: rgb(172, 172, 172);
-    border-radius: 25px;
-    color: #fff;
-  }
+  //歌曲列表
+  .listBottom {
+    // margin-bottom: 55px;
+    width: 100%;
+    padding: 10px;
 
-  .icon {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    width: 15px;
-    height: 15px;
-  }
-}
+    ul {
 
-//歌曲列表
-.listBottom {
-  width: 100%;
-  padding: 10px;
+      li {
+        margin: 5px 0;
+        width: 100%;
+        height: 50px;
+        border-bottom: 1px solid #e9e9ea;
 
-  ul {
-
-    li {
-      margin: 5px 0;
-      width: 100%;
-      height: 50px;
-      border-bottom: 1px solid #e9e9ea;
-
-      .index {
-        width: 16px;
-        float: left;
-        line-height: 50px;
-      }
-
-      .song {
-        float: left;
-        margin-left: 8px;
-        padding-top: 12px;
-        width: 70%;
-        height: 100%;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-
-        .songName {
-          display: block;
-          line-height: 10px;
-          font-size: 14px;
+        .index {
+          width: 16px;
+          float: left;
+          line-height: 50px;
         }
 
-        .songAuthor {
-          margin-right: 10px;
-          font-size: 12px;
-          color: #999;
+        .song {
+          float: left;
+          margin-left: 8px;
+          padding-top: 12px;
+          width: 70%;
+          height: 100%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+
+          .songName {
+            display: block;
+            line-height: 10px;
+            font-size: 14px;
+          }
+
+          .songAuthor {
+            margin-right: 10px;
+            font-size: 12px;
+            color: #999;
+          }
         }
-      }
 
-      .listBottom-right {
-        display: flex;
-        align-items: center;
-        float: right;
-        height: 100%;
-        line-height: 50px;
-        fill: #999;
+        .listBottom-right {
+          display: flex;
+          align-items: center;
+          float: right;
+          height: 100%;
+          line-height: 50px;
+          fill: #999;
 
-        .list {
-          margin-left: 10px;
+          .list {
+            margin-left: 10px;
+          }
         }
       }
     }

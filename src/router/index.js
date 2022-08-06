@@ -53,14 +53,17 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   if (to.path == '/login') {
     store.state.isFooterMusic = false
+    // console.log(store.state.isFooterMusic);
   } else {
     store.state.isFooterMusic = true
   }
-  if (to.path == '/search' || to.path == '/ItemMusic' || to.path == '/login') {
-    store.state.isTopNav = false
-  } else {
-    store.state.isTopNav = true
+  if(to.path == '/ItemMusic' || to.path == '/search'){
+    // console.log(1111);
+    store.state.tapbar = false
+  }else{
+    store.state.tapbar = true
   }
 })
+
 
 export default router

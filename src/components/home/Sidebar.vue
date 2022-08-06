@@ -6,7 +6,10 @@
         <!-- 用户 -->
         <div class="user">
           <img :src="[user.data.profile.avatarUrl || users.data.profile.avatarUrl || '']" alt="">
-          <span class="name">{{ user.data.profile.nickname || users.data.profile.nickname || '请登录账号！' }}</span>
+          <span class="name" v-if="user.data.profile.nickname || users.data.profile.nickname === ''">{{
+            user.data.profile.nickname || users.data.profile.nickname
+            }}</span>
+          <span v-else @click="$router.push('/infoUser')">请登录账号！</span>
         </div>
         <!-- 扫一扫 -->
         <div class="Scan-QR-Code">
@@ -47,9 +50,9 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#ticket"></use>
               </svg>
-              <span>消息中心</span>
+              <span>云贝中心</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -58,45 +61,9 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#tips"></use>
               </svg>
-              <span>消息中心</span>
-            </div>
-            <svg class="icon" aria-hidden="true" @click="backHome">
-              <use xlink:href="#icon-youjiantou"></use>
-            </svg>
-          </li>
-        </ul>
-        <ul class="other">
-          <div class="other-title">音乐服务</div>
-          <li class="other-item">
-            <div class="other-item-left">
-              <svg class="iconpark-icon">
-                <use href="#mail"></use>
-              </svg>
-              <span>消息中心</span>
-            </div>
-            <svg class="icon" aria-hidden="true" @click="backHome">
-              <use xlink:href="#icon-youjiantou"></use>
-            </svg>
-          </li>
-          <li class="other-item">
-            <div class="other-item-left">
-              <svg class="iconpark-icon">
-                <use href="#mail"></use>
-              </svg>
-              <span>消息中心</span>
-            </div>
-            <svg class="icon" aria-hidden="true" @click="backHome">
-              <use xlink:href="#icon-youjiantou"></use>
-            </svg>
-          </li>
-          <li class="other-item">
-            <div class="other-item-left">
-              <svg class="iconpark-icon">
-                <use href="#mail"></use>
-              </svg>
-              <span>消息中心</span>
+              <span>创作者中心</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -108,9 +75,23 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#headset-one"></use>
               </svg>
-              <span>消息中心</span>
+              <span>游戏专区</span>
+            </div>
+            <svg class="icon" aria-hidden="true" @click="backHome">
+              <use xlink:href="#icon-youjiantou"></use>
+            </svg>
+          </li>
+        </ul>
+        <ul class="other">
+          <div class="other-title">其他</div>
+          <li class="other-item">
+            <div class="other-item-left">
+              <svg class="iconpark-icon">
+                <use href="#setting-one"></use>
+              </svg>
+              <span>设置</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -119,9 +100,18 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#moon"></use>
               </svg>
-              <span>消息中心</span>
+              <span>深色模式</span>
+            </div>
+            <van-switch size="18px" active-color="#ee0a24" inactive-color="#dcdee0" v-model="checked" />
+          </li>
+          <li class="other-item">
+            <div class="other-item-left">
+              <svg class="iconpark-icon">
+                <use href="#alarm-clock-62p6ngcg"></use>
+              </svg>
+              <span>定时关闭</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -130,9 +120,9 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#theme"></use>
               </svg>
-              <span>消息中心</span>
+              <span>个性装扮</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -141,9 +131,9 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#headphone-sound"></use>
               </svg>
-              <span>消息中心</span>
+              <span>边听边存</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -152,9 +142,9 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#square-small"></use>
               </svg>
-              <span>消息中心</span>
+              <span>添加Siri捷径</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -163,9 +153,9 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#forbid"></use>
               </svg>
-              <span>消息中心</span>
+              <span>音乐黑名单</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -174,20 +164,9 @@
           <li class="other-item">
             <div class="other-item-left">
               <svg class="iconpark-icon">
-                <use href="#mail"></use>
+                <use href="#protect"></use>
               </svg>
-              <span>消息中心</span>
-            </div>
-            <svg class="icon" aria-hidden="true" @click="backHome">
-              <use xlink:href="#icon-youjiantou"></use>
-            </svg>
-          </li>
-          <li class="other-item">
-            <div class="other-item-left">
-              <svg class="iconpark-icon">
-                <use href="#mail"></use>
-              </svg>
-              <span>消息中心</span>
+              <span>青少年模式</span>
             </div>
             <svg class="icon" aria-hidden="true" @click="backHome">
               <use xlink:href="#icon-youjiantou"></use>
@@ -210,6 +189,7 @@ export default {
           profile: {},
         }
       },
+      checked:false,
     }
   },
   computed: {
@@ -234,6 +214,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .sidebar-box {
   padding: 5px 10px;
   width: 100%;
