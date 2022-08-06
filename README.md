@@ -25,19 +25,19 @@ Github地址：https://github.com/Binaryify/NeteaseCloudMusicApi
 
 ## 预览
 
-<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793509625.png" style="zoom: 67%;" />
+<img src="https://github.com/xiaoyua499/vue_wangyiyun-app/blob/main/public/%E5%9B%BE%E7%89%87/uTools_1659793509625.png" style="zoom: 67%;" />
 
-<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793525598.png" alt="uTools_1659793525598" style="zoom:67%;" />
+<img src="https://github.com/xiaoyua499/vue_wangyiyun-app/blob/main/public/%E5%9B%BE%E7%89%87/uTools_1659793525598.png" style="zoom:67%;" />
 
-<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793541728.png" alt="uTools_1659793541728" style="zoom:67%;" />
+<img src="https://github.com/xiaoyua499/vue_wangyiyun-app/blob/main/public/%E5%9B%BE%E7%89%87/uTools_1659793541728.png" style="zoom:67%;" />
 
-<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793555702.png" alt="uTools_1659793555702" style="zoom:67%;" />
+<img src="https://github.com/xiaoyua499/vue_wangyiyun-app/blob/main/public/%E5%9B%BE%E7%89%87/uTools_1659793555702.png" style="zoom:67%;" />
 
-<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793608952.png" alt="uTools_1659793608952" style="zoom:67%;" />
+<img src="https://github.com/xiaoyua499/vue_wangyiyun-app/blob/main/public/%E5%9B%BE%E7%89%87/uTools_1659793608952.png" style="zoom:67%;" />
 
-<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793625106.png" alt="uTools_1659793625106" style="zoom:67%;" />
+<img src="https://github.com/xiaoyua499/vue_wangyiyun-app/blob/main/public/%E5%9B%BE%E7%89%87/uTools_1659793625106.png" style="zoom:67%;" />
 
-<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793643668.png" alt="uTools_1659793643668" style="zoom: 67%;" />
+<img src="https://github.com/xiaoyua499/vue_wangyiyun-app/blob/main/public/%E5%9B%BE%E7%89%87/uTools_1659793643668.png" style="zoom: 67%;" />
 
 ## 目前已知问题
 
