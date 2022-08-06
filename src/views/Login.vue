@@ -1,5 +1,8 @@
 <template>
   <div class="login">
+    <svg class="icon" aria-hidden="true" @click="$router.go(-1)">
+      <use xlink:href="#icon-zuojiantou"></use>
+    </svg>
     <p class="title">手机号登录</p>
     <div class="loginTop">登录体验更多精彩</div>
     <div class="loginBottom">

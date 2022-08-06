@@ -43,7 +43,6 @@
         </li>
       </ul>
     </div>
-
   </div>
 </template>
 
@@ -56,13 +55,13 @@ export default {
 
   props: ['itemList', 'subscribedCount'],
 
-  methods:{
-    playMusic(index){
+  methods: {
+    playMusic(index) {
       this.updatePlayList(this.itemList)
       this.updatePlayListIndex(index)
     },
 
-    ...mapMutations(['updatePlayList','updatePlayListIndex'])
+    ...mapMutations(['updatePlayList', 'updatePlayListIndex'])
   }
 }
 </script>
@@ -70,6 +69,7 @@ export default {
 <style lang="less" scoped>
 .itemMusicList {
   margin-top: 25px;
+  margin-bottom: 20px;
   padding: 10px;
   background-color: #fff;
   border-top-left-radius: 20px;
@@ -123,18 +123,20 @@ export default {
   //底部
   .listBottom {
     width: 100%;
-    ul{
-      li{
+
+    ul {
+      li {
         margin: 5px 0;
         width: 100%;
         height: 50px;
-        .index{
+
+        .index {
           width: 16px;
           float: left;
           line-height: 50px;
         }
 
-        .song{
+        .song {
           float: left;
           margin-left: 8px;
           padding-top: 12px;
@@ -143,20 +145,21 @@ export default {
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
-          
-          .songName{
+
+          .songName {
             display: block;
             line-height: 10px;
             font-size: 14px;
           }
-          .songAuthor{
+
+          .songAuthor {
             margin-right: 10px;
             font-size: 12px;
             color: #999;
           }
         }
 
-        .listBottom-right{
+        .listBottom-right {
           display: flex;
           align-items: center;
           float: right;
@@ -164,7 +167,7 @@ export default {
           line-height: 50px;
           fill: #999;
 
-          .list{
+          .list {
             margin-left: 10px;
           }
         }

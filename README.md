@@ -23,6 +23,22 @@ npm run serve
 
 Github地址：https://github.com/Binaryify/NeteaseCloudMusicApi
 
+## 预览
+
+<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793509625.png" style="zoom: 67%;" />
+
+<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793525598.png" alt="uTools_1659793525598" style="zoom:67%;" />
+
+<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793541728.png" alt="uTools_1659793541728" style="zoom:67%;" />
+
+<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793555702.png" alt="uTools_1659793555702" style="zoom:67%;" />
+
+<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793608952.png" alt="uTools_1659793608952" style="zoom:67%;" />
+
+<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793625106.png" alt="uTools_1659793625106" style="zoom:67%;" />
+
+<img src="D:\Desktop\文件\web\项目\网易云\vue_wangyiyun-app\public\图片\uTools_1659793643668.png" alt="uTools_1659793643668" style="zoom: 67%;" />
+
 ## 目前已知问题
 
 - [x] 登录账号后数据丢失导致报错问题
@@ -45,13 +61,65 @@ Github地址：https://github.com/Binaryify/NeteaseCloudMusicApi
   }
   ```
 
-  
-- [ ] 歌词页面
+- [x] 歌词页面
   - [ ] 特殊歌词因时间无法匹配，导致歌词显示错误问题
   - [x] 歌词在上下状态栏露出问题
 
     解决方法:在整个歌词部分外面套一个盒子,并设置溢出隐藏
-- [ ] 歌曲进度条拖拽无效问题
+- [x] 歌曲进度条
+
+  - [x] 拖拽无效问题：
+
+    - 原因：v-modul不能绑定props传过来的值，导致报只读属性不能更改的错误
+    - 解决方法：设置中间值
+
+      ```vue
+      <!-- 进度条 -->
+      <div class="pmgressbar">
+        <van-slider @change="change" min="0" :max="duration" v-model="schedule" :step="0.05" bar-height="2px"
+                    inactive-color="#b7b9b9" active-color="#ffffffe4" button-size="5px" />
+      </div>
+      <script>
+      export default {
+        data() {
+          return {
+            schedule: 0
+          }
+        },
+        methods: {
+          //拖动进度条事件
+          change() {
+            this.updataChangeTime(this.schedule)
+          },
+          ...mapMutations(['updateDetailShow', 'updatePlayListIndex', 'updateCurrentTime', 'updataChangeTime'])
+        },
+      }
+      </script>
+      ```
+
+      
+
+  - [x] 解决发现切换歌曲后进度条无法重置
+
+    - 原因：切换歌曲是没有传入歌曲的总时长也就是`van-slider`组件中`:max="duration"`值为NaN
+
+    - 解决方法：判断传入的方法是否为NaN，如果是将它设置为默认值200（取巧方法，不是真正的解决问题，后续会改进）
+
+      ```js
+      //获取歌曲总时长
+      updateDuration(state, value) {
+        if (isNaN(value)) {
+          value = 200
+        } else {
+          state.duration = value
+        }
+      },
+      ```
+
+      
+
+
+  
 
 ## 致谢
 

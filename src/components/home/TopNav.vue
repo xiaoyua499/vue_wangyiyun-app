@@ -5,22 +5,17 @@
         <use xlink:href="#icon-31liebiao"></use>
       </svg>
     </div>
-
     <div class="topContent">
-      <span @click="[$router.push('/infoUser'), activeing()]">我的</span>
-      <span id="active" @click="[$router.push('/'), activeing()]">发现</span>
-      <span>云村</span>
-      <span>视频</span>
+      <van-search shape="round" placeholder="请输入搜索关键词" @click="[$router.push('/search')]" />
     </div>
     <div class="topRight">
-      <svg class="icon" aria-hidden="true" @click="$router.push('/search')">
-        <use xlink:href="#icon-sousuo"></use>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-saoyisao"></use>
       </svg>
     </div>
-
   </div>
   <!-- 侧边栏 -->
-  <van-popup :show="sidebarShow" position="left" :style="{ height: '100%', width: '70%' }">
+  <van-popup v-model:show="sidebarShow" position="left" :style="{ height: '100%', width: '70%' }" teleport="#app">
     <Sidebar></Sidebar>
   </van-popup>
 </template>
@@ -29,9 +24,10 @@
 import { mapState, mapMutations } from 'vuex';
 //注册Sidebar侧边栏组件
 import Sidebar from '@/components/home/Sidebar';
-
+import { ref } from 'vue';
 export default {
   components: { Sidebar },
+
   data() {
     return {
       sidebarShow: false,
@@ -41,19 +37,7 @@ export default {
 
   },
   methods: {
-    //动态获取active样式
-    activeing() {
-      // 获取所有元素
-      var spans = document.getElementsByTagName("span");
-      for (var i = 0; i < spans.length; i++) {
-        spans[i].onclick = function () {
-          for (var i = 0; i < spans.length; i++) {
-            spans[i].className = "";
-          }
-          this.className = "active";
-        };
-      }
-    },
+
     //是否显示侧边栏
     updataSidebarShow() {
       this.sidebarShow = !this.sidebarShow
@@ -62,8 +46,6 @@ export default {
         console.log('111');
       }
     },
-
-
   },
   computed: {
   },
@@ -80,17 +62,21 @@ export default {
   width: 100%;
   height: 1rem;
 
-  .topContent {
-    width: 65%;
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
-    // align-items: center;
-    font-size: .36rem;
+  .topLeft {
+    width: 25px;
+    height: 25px;
+  }
 
-    .active {
-      font-weight: 600;
+  .topContent {
+    .van-search {
+      padding: 0;
+      width: 290px;
     }
+  }
+
+  .topRight {
+    width: 25px;
+    height: 25px;
   }
 }
 </style>

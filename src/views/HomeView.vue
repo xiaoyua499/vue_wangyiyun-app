@@ -1,5 +1,6 @@
 <template>
   <div>
+    <TopNav/>
     <SwpierTop />
     <IconList />
     <MusicList />
@@ -11,6 +12,7 @@
 import SwpierTop from '@/components/home/SwpierTop.vue'
 import IconList from '@/components/home/IconList.vue'
 import MusicList from '@/components/home/MusicList.vue'
+import TopNav from '@/components/home/TopNav.vue'
 
 export default {
   name: 'HomeView',
@@ -18,6 +20,7 @@ export default {
     SwpierTop,
     IconList,
     MusicList,
+    TopNav
   }
 }
 </script>

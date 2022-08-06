@@ -1,7 +1,9 @@
 <template>
   <div class="MusicBody">
     <!-- 背景 -->
-    <img :src="musicList.al.picUrl" alt="" class="bgimg">
+    <div class="bgcimg">
+      <img :src="musicList.al.picUrl" alt="" class="bgimg">
+    </div>
     <!-- 顶部 -->
     <div class="detailTop">
       <!-- 背景 -->
@@ -73,7 +75,8 @@
       </div>
       <!-- 进度条 -->
       <div class="pmgressbar">
-        <input type="range" min="0" :max="duration" v-model="currentTime" step="0.05">
+        <van-slider @change="change" min="0" :max="duration" v-model="schedule" :step="0.05" bar-height="2px"
+          inactive-color="#b7b9b9" active-color="#ffffffe4" button-size="5px" />
       </div>
       <!-- 切换 -->
       <div class="switchButton">
@@ -109,6 +112,7 @@ export default {
   data() {
     return {
       isLyricShow: false,
+      schedule: 0
     }
   },
   computed: {
@@ -145,7 +149,6 @@ export default {
     },
   },
   mounted() {
-    // console.log(this.musicList);
     this.addDuration()
   },
   methods: {
@@ -156,6 +159,8 @@ export default {
     },
     //歌曲切换
     goPlay(val) {
+      this.addDuration()
+      this.updataChangeTime(this.schedule)
       let index = this.playListIndex + val
       if (index < 0) {
         index = this.playList.length - 1
@@ -163,19 +168,23 @@ export default {
         index = 0
       }
       this.updatePlayListIndex(index)
-      // console.log(index);
     },
-    ...mapMutations(['updateDetailShow', 'updatePlayListIndex', 'updateCurrentTime'])
+    //拖动进度条事件
+    change() {
+      this.updataChangeTime(this.schedule)
+    },
+    ...mapMutations(['updateDetailShow', 'updatePlayListIndex', 'updateCurrentTime', 'updataChangeTime'])
   },
-  props: ['musicList', 'isbtnShow', 'play', 'addDuration'],
+  props: ['musicList', 'isbtnShow', 'play', 'addDuration', 'updateTime','interVal'],
   components: {
     Vue3Marquee,
   },
   watch: {
+    //检测歌曲当前播放时间是否改变
     currentTime(newValue) {
+      this.schedule = newValue
       //歌词样式突出显示
       let p = document.querySelector("p.active")
-      // console.log([p]);
       if (p === null) {
         return
       } else if (p.offsetTop > 273) {
@@ -191,8 +200,6 @@ export default {
           this.updatePlayListIndex(this.playListIndex + 1)
         }
       }
-      this.updateCurrentTime(newValue)
-      // console.log(newValue,this.duration);
     }
   }
 }
@@ -202,12 +209,26 @@ export default {
 .MusicBody {
 
   // 背景
-  .bgimg {
-    position: fixed;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    filter: blur(1.6rem);
+  .bgcimg {
+    .bgimg {
+      position: fixed;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      filter: blur(2rem);
+      // background-color: rgba(255,255,255,0.8);
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      background-color: rgba(26, 25, 25, 0.36);
+      z-index: -1;
+    }
   }
 
   // 顶部
@@ -361,7 +382,7 @@ export default {
       width: 100%;
       // height: 9rem;
 
-      transition: all .8s linear;
+      transition: all .3s linear;
       z-index: -1;
 
       p {
@@ -401,12 +422,9 @@ export default {
     }
 
     .pmgressbar {
-      input {
-        margin-top: .6rem;
-        margin-bottom: .6rem;
-        width: 100%;
-        height: .06rem;
-      }
+      display: flex;
+      align-items: center;
+      height: 1.3rem;
     }
 
     .switchButton {
