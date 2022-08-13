@@ -45,6 +45,7 @@ export default {
     onMounted(async () => {
       let res = await getMusicList()
       state.MusicList = res.data.result
+      console.log(state.MusicList);
     })
 
     return { state, changeCount }

@@ -43,7 +43,7 @@ export default {
       this.sidebarShow = !this.sidebarShow
       var show = document.getElementsByClassName('van-overlay')
       show.onclick = function () {
-        console.log('111');
+        // console.log('111');
       }
     },
   },

@@ -18,8 +18,8 @@
       </svg>
       <span>个人歌单</span>
     </div>
-    <div class="iconItem">
-      <svg class="icon" aria-hidden="true">
+    <div class="iconItem" @click="$router.push('/PlaylistClassify')">
+      <svg class=" icon" aria-hidden="true">
         <use xlink:href="#icon-paihangbang"></use>
       </svg>
       <span>排行榜</span>
@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.iconList{
+.iconList {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -42,19 +42,19 @@ export default {
   width: 100%;
   height: 1rem;
 
-  .iconItem{
+  .iconItem {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 25%;
     height: 100%;
 
-    .icon{
+    .icon {
       width: .6rem;
       height: .6rem;
     }
-    
-    span{
+
+    span {
       font-size: .2rem;
     }
   }
