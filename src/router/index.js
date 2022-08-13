@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import store from '@/store/index'
 
@@ -32,6 +32,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "Login" */ '../views/Login.vue')
   },
   {
+    path: '/PlaylistClassify',
+    name: 'PlaylistClassify',
+    component: () => import(/* webpackChunkName: "PlaylistClassify" */ '../views/PlaylistClassify.vue')
+  },
+  {
     path: '/infoUser',
     name: 'InfoUser',
     beforeEnter: (to, from, next) => {
@@ -47,6 +52,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
+  // hash: createWebHashHistory(process.env.BASE_URL),
   routes
 })
 //全局路由守卫
@@ -57,10 +63,10 @@ router.beforeEach((to, from) => {
   } else {
     store.state.isFooterMusic = true
   }
-  if(to.path == '/ItemMusic' || to.path == '/search'){
+  if (to.path == '/ItemMusic' || to.path == '/search') {
     // console.log(1111);
     store.state.tapbar = false
-  }else{
+  } else {
     store.state.tapbar = true
   }
 })

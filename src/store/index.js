@@ -33,11 +33,19 @@ export default createStore({
         profile: {},
       }
     },
+    //排行榜数据
+    topSort: []
 
   },
   getters: {
   },
   mutations: {
+    //更新排行榜数据
+    updataTopSort(state, value) {
+      state.topSort = value
+      sessionStorage.setItem('topSort', JSON.stringify(state.topSort))
+      console.log(state.topSort);
+    },
     // 播放按钮是否显示
     updateIsbtnShow(state, value) {
       state.isbtnShow = value

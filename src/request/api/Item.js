@@ -23,3 +23,12 @@ export function getmusicLyric(id) {
     url: `/lyric?id=${id}`,
   })
 }
+
+
+//获取排行榜
+export function getPlaylistClassify() {
+  return service({
+    method: "GET",
+    url: `/toplist/detail`,
+  })
+}
