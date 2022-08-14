@@ -1,10 +1,12 @@
 <template>
   <div class="top-box">
+    <!-- 导航栏 -->
     <div class="top-title">
       <van-nav-bar title="排行榜" left-arrow fixed @click-left="onClickLeft" />
     </div>
+    <!-- 标签页 -->
     <div class="top-center">
-      <van-tabs v-model:active="active" scrollspy>
+      <van-tabs v-model:active="active" scrollspy sticky offset-top="46">
         <van-tab class="top-sort" title="官方榜">
           <div class="top-sort-title">
             <svg class="icon" aria-hidden="true" @click="goPlay(1)">
@@ -13,8 +15,7 @@
             <div class="title-name">官方榜</div>
           </div>
           <div class="top-sort-content" v-for="(item, index) in state.topSort">
-            <div class="official"
-              v-if="item.id == '19723756' || item.id == '3779629' || item.id == '2884035' || item.id == '3778678'">
+            <div class="official">
               <div class="official-top">
                 <div class="official-title">{{ item.name }}</div>
                 <div class="updateFrequency">{{ item.updateFrequency }}</div>
@@ -43,8 +44,47 @@
             <div class="title-name">精选榜</div>
           </div>
           <div class="square">
-            <div class="top-sort-content" v-for="(item, index) in state.topSort" :key="index">
-              <img v-if="index>3&&index<13" :src="item.coverImgUrl" alt="">
+            <div class="top-sort-content" v-for="(item, index) in state.squareL" :key="index">
+              <img :src="item.coverImgUrl" alt="">
+            </div>
+          </div>
+        </van-tab>
+        <van-tab class="top-sort" title="曲风榜">
+          <div class="top-sort-title">
+            <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+              <use xlink:href="#icon-yinle1"></use>
+            </svg>
+            <div class="title-name">曲风榜</div>
+          </div>
+          <div class="square ">
+            <div class="top-sort-content" v-for="(item, index) in state.style" :key="index">
+              <img :src="item.coverImgUrl" alt="">
+            </div>
+          </div>
+        </van-tab>
+        <van-tab class="top-sort" title="全球榜">
+          <div class="top-sort-title">
+            <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+              <use xlink:href="#icon-yinle1"></use>
+            </svg>
+            <div class="title-name">全球榜</div>
+          </div>
+          <div class="square">
+            <div class="top-sort-content" v-for="(item, index) in state.global" :key="index">
+              <img :src="item.coverImgUrl" alt="">
+            </div>
+          </div>
+        </van-tab>
+        <van-tab class="top-sort" title="语种榜">
+          <div class="top-sort-title">
+            <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+              <use xlink:href="#icon-yinle1"></use>
+            </svg>
+            <div class="title-name">语种榜</div>
+          </div>
+          <div class="square">
+            <div class="top-sort-content" v-for="(item, index) in state.language" :key="index">
+              <img :src="item.coverImgUrl" alt="">
             </div>
           </div>
         </van-tab>
@@ -63,29 +103,38 @@ export default {
   setup() {
     const active = ref(0);
     const onClickLeft = () => history.back();
-    const topTitleList = [
-      '官方榜',
-      '精选榜',
-      '曲风榜',
-      '全球榜',
-      '语种榜',
-      'MV榜',
-      '特色榜'
-    ]
     const state = reactive({
-      topSort: [],
+      topSort: [],//官方榜
+      squareL: [],//精选榜
+      style: [], //曲风榜
+      global: [],//全球榜
+      language: [],//语种榜
     })
     onMounted(
       async () => {
         let { data: res } = await getPlaylistClassify()
-        state.topSort = res.list
+        state.topSort = res.list.filter(item => {
+          return item.id == '19723756' || item.id == '3779629' || item.id == '2884035' || item.id == '3778678'
+        })
+        state.squareL = res.list.filter(item => {
+          return item.id == '5453912201' || item.id == '991319590' || item.id == '1978921795' || item.id == '21845217' || item.id == '3112516681' || item.id == '5338990334' || item.id == '6688069460 ' || item.id == '6723173524 ' || item.id == '6886768100'
+        })
+        state.style = res.list.filter(item => {
+          return item.id == '71384707' || item.id == '71385702' || item.id == '3812895' || item.id == '5059661515' || item.id == '10520166' || item.id == '5059633707' || item.id == '5059642708 '
+        })
+        state.global = res.list.filter(item => {
+          return item.id == '180106' || item.id == '60198' || item.id == '3812895' || item.id == '27135204' || item.id == '6939992364' || item.id == '60131'
+        })
+        state.language = res.list.filter(item => {
+          return item.id == '745956260' || item.id == '5059644681' || item.id == '6732051320' || item.id == '6732014811' || item.id == '7095271308'
+        })
         for (let i = 0; i < res.list.length; i++) {
-          console.log(i, res.list[i].id);
+          console.log(i, res.list[i].id, res.list[i].name);
         }
-        console.log(state.topSort);
+        console.log(res.list);
       }
     )
-    return { topTitleList, state, onClickLeft, active };
+    return { state, onClickLeft, active };
   },
 }
 </script>
@@ -95,6 +144,7 @@ export default {
   background-color: #f6f7fb;
   padding: 0 10px;
 
+  // 导航栏
   .top-title::v-deep {
     .van-nav-bar {
       background-color: #f6f7fb;
@@ -118,13 +168,10 @@ export default {
     }
   }
 
+  // 标签页
   .top-center::v-deep {
-    margin-top: 46px;
 
     .van-tabs__wrap {
-      position: fixed;
-      top: 46px;
-      left: 0;
       width: 100%;
 
       .van-tabs__nav {
@@ -143,7 +190,7 @@ export default {
     }
 
     .van-tabs__content {
-      margin-top: 80px;
+      margin-top: 40px;
       margin-bottom: 90px;
       padding-bottom: 20px;
 
@@ -159,10 +206,10 @@ export default {
           }
         }
 
+        //官方榜
         .official {
           margin: 10px 0;
           padding: 10px;
-          // height: 100px;
           background-color: #fff;
           border-radius: 15px;
 
@@ -198,7 +245,6 @@ export default {
             .topThree {
               width: 260px;
               font-size: 12px;
-              // overflow: hidden;
 
               li {
                 display: flex;
@@ -229,17 +275,35 @@ export default {
           }
         }
 
+        //方形样式
         .square {
-          // width: 340px;
-          // height: 340px;
           display: flex;
           flex-wrap: wrap;
           align-content: space-around;
           justify-content: space-around;
 
-          img {
-            width: 100px;
+
+          .top-sort-content {
+            margin-bottom: 20px;
             height: 100px;
+
+            &:nth-child(7) {
+              margin-bottom: 0;
+            }
+
+            &:nth-child(8) {
+              margin-bottom: 0;
+            }
+
+            &:nth-child(9) {
+              margin-bottom: 0;
+            }
+
+            img {
+              border-radius: 10px;
+              width: 100px;
+              height: 100px;
+            }
           }
         }
       }

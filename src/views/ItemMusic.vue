@@ -18,10 +18,11 @@ export default {
 
     onMounted(async () => {
       let id = useRoute().query.id
+      // console.log(id);
       //获取歌单详情
       let res = await getMusicItemList(id)
       state.playlist = res.data.playlist
-      // console.log(res);
+      console.log(state.playlist);
 
       //获取歌单歌曲
       let result = await getItemList(id)

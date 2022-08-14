@@ -16,7 +16,7 @@
       </svg>
     </div>
   </div>
-  <div class="itemMusicCenter">
+  <!-- <div class="itemMusicCenter">
     <div class="itemTop">
       <div class="cover">
         <img :src="playlist.coverImgUrl" alt="">
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="itemMusicBottom">
     <ul>
       <li>
@@ -70,12 +70,13 @@
 </template>
 
 <script>
+import { onMounted } from '@vue/runtime-core'
 export default {
   setup(props) {
-    // console.log(props);
+    console.log(props);
     //判断数据是否拿到
     if (props.playlist.creator == "") {
-      props.playlist.creator = JSON.parse(sessionStorage.getItem().playlist).creator
+      props.playlist.creator = JSON.parse(sessionStorage.getItem('itemDetail').playlist).creator
     }
   },
 
@@ -86,7 +87,6 @@ export default {
 <style lang="less" scoped>
 .itemMusicTop {
   position: relative;
-  // padding: .2rem;
   width: 100%;
   height: 1rem;
   display: flex;
