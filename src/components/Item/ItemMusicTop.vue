@@ -1,6 +1,6 @@
 <template>
   <div class="itemMusicTop">
-    <img :src="playlist.coverImgUrl" alt="" class="bgimg">
+    <img :src="itemMusic.playlist.coverImgUrl" alt="" class="bgimg">
     <div class="itemLeft">
       <svg class="icon" aria-hidden="true" @click="$router.go(-1)">
         <use xlink:href="#icon-zuojiantou"></use>
@@ -16,42 +16,42 @@
       </svg>
     </div>
   </div>
-  <!-- <div class="itemMusicCenter">
+  <div class="itemMusicCenter">
     <div class="itemTop">
       <div class="cover">
-        <img :src="playlist.coverImgUrl" alt="">
+        <img :src="itemMusic.playlist.coverImgUrl" alt="">
       </div>
       <div class="details">
-        <span class="detailsTop">{{ playlist.name }}</span>
+        <span class="detailsTop">{{ itemMusic.playlist.name }}</span>
         <div class="detailsCenter">
-          <img :src="playlist.creator.backgroundUrl" alt="">
-          <span>{{ playlist.creator.nickname }}</span>
+          <img :src="itemMusic.playlist.creator.backgroundUrl" alt="">
+          <span>{{ itemMusic.playlist.creator.nickname }}</span>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-youjiantou"></use>
           </svg>
         </div>
         <div class="detailsBottom">
-          <span>{{ playlist.creator.signature }}</span>
+          <span>{{ itemMusic.playlist.creator.signature }}</span>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-youjiantou"></use>
           </svg>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
   <div class="itemMusicBottom">
     <ul>
       <li>
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-xiaoxi"></use>
         </svg>
-        <span>{{ playlist.playCount }}</span>
+        <span>{{ itemMusic.playlist.playCount }}</span>
       </li>
       <li>
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-fenxiang"></use>
         </svg>
-        <span>{{ playlist.shareCount }}</span>
+        <span>{{ itemMusic.playlist.shareCount }}</span>
       </li>
       <li>
         <svg class="icon" aria-hidden="true">
@@ -70,17 +70,32 @@
 </template>
 
 <script>
-import { onMounted } from '@vue/runtime-core'
+import { mapState } from 'vuex'
 export default {
-  setup(props) {
-    console.log(props);
-    //判断数据是否拿到
-    if (props.playlist.creator == "") {
-      props.playlist.creator = JSON.parse(sessionStorage.getItem('itemDetail').playlist).creator
+  data() {
+    return {
+      playList: {}
     }
   },
+  computed: {
+    ...mapState(['itemMusic'])
+  },
+  methods: {
+    // getData() {
+    //   this.playList = this.itemMusic.playlist
+    //   // this.playList.creator = this.itemMusic.playList.creator
+    //   if (this.playList.creator == '') {
+    //     this.playList.creator = JSON.parse(sessionStorage.getItem('playlist')).creator
+    //   }
+    //   console.log(this.playList);
+    //   console.log(JSON.parse(sessionStorage.getItem('playlist')).creator);
+    // },
 
-  props: ['playlist']
+  },
+  mounted() {
+    // this.playList=this.$store.state.itemMusic.playList
+    // this.getData()
+  }
 }
 </script>
 

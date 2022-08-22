@@ -9,7 +9,7 @@
       <!-- 播放全部 -->
       <div class="allPlay">
         <span>播放全部</span>
-        <div>(共{{ itemList.length }}首)</div>
+        <div>(共{{ itemMusic.itemList.length }}首)</div>
       </div>
       <!-- 收藏 -->
       <div class="collect">
@@ -17,14 +17,14 @@
           <use xlink:href="#icon-jiahao-copy"></use>
         </svg>
         <span>收藏</span>
-        <div>({{ subscribedCount }})</div>
+        <div>({{ itemMusic.playlist.subscribedCount }})</div>
       </div>
     </div>
 
     <!-- 列表底部 -->
     <div class="listBottom">
       <ul>
-        <li v-for="(item, index, id) in itemList" :key="id">
+        <li v-for="(item, index, id) in itemMusic.itemList" :key="id">
           <span class="index">{{ index + 1 }}</span>
           <div class="song" @click="playMusic(index)">
             <span class="songName">{{ item.name }}</span>
@@ -47,20 +47,16 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 export default {
-  setup(props) {
-    // console.log(props.subscribedCount);
+  computed: {
+    ...mapState(['itemMusic'])
   },
-
-  props: ['itemList', 'subscribedCount'],
-
   methods: {
     playMusic(index) {
-      this.updatePlayList(this.itemList)
+      this.updatePlayList(this.itemMusic.itemList)
       this.updatePlayListIndex(index)
     },
-
     ...mapMutations(['updatePlayList', 'updatePlayListIndex'])
   }
 }

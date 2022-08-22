@@ -7,7 +7,7 @@
     <div class="MusicContent">
       <van-swipe :loop="false" :width="125" :show-indicators="false" class="my-swpie">
         <van-swipe-item v-for="(item, id) in state.MusicList" :key="id" class="item">
-          <router-link :to="{ path: '/ItemMusic', query: { id: item.id } }">
+          <router-link :to="{ path: '/ItemMusic'}" @click="getRecommended(item.id)">
             <img :src="item.picUrl" alt="">
             <span class="playCount">
               <svg class="icon" aria-hidden="true">
@@ -45,11 +45,18 @@ export default {
     onMounted(async () => {
       let res = await getMusicList()
       state.MusicList = res.data.result
-      console.log(state.MusicList);
+      // console.log(state.MusicList);
     })
 
     return { state, changeCount }
-  }
+  },
+  methods: {
+    //获取推荐歌曲列表
+    getRecommended(id){
+      this.$store.dispatch('getItemMusicPlaylist',id)
+      this.$store.dispatch('getItemMusicItemList',id)
+    }
+  },
 }
 </script>
 
