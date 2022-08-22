@@ -9,12 +9,12 @@
       <van-tabs v-model:active="active" scrollspy sticky offset-top="46">
         <van-tab class="top-sort" title="官方榜">
           <div class="top-sort-title">
-            <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+            <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-yinle1"></use>
             </svg>
             <div class="title-name">官方榜</div>
           </div>
-          <div class="top-sort-content" v-for="(item, index) in state.topSort">
+          <div class="top-sort-content" v-for="(item, index) in state.topSort" @click="goItemMusic(item.id)">
             <div class="official">
               <div class="official-top">
                 <div class="official-title">{{ item.name }}</div>
@@ -38,52 +38,56 @@
         </van-tab>
         <van-tab class="top-sort" title="精选榜">
           <div class="top-sort-title">
-            <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+            <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-yinle1"></use>
             </svg>
             <div class="title-name">精选榜</div>
           </div>
           <div class="square">
-            <div class="top-sort-content" v-for="(item, index) in state.squareL" :key="index">
+            <div class="top-sort-content" v-for="(item, index) in state.squareL" :key="index"
+              @click="goItemMusic(item.id)">
               <img :src="item.coverImgUrl" alt="">
             </div>
           </div>
         </van-tab>
         <van-tab class="top-sort" title="曲风榜">
           <div class="top-sort-title">
-            <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+            <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-yinle1"></use>
             </svg>
             <div class="title-name">曲风榜</div>
           </div>
           <div class="square ">
-            <div class="top-sort-content" v-for="(item, index) in state.style" :key="index">
+            <div class="top-sort-content" v-for="(item, index) in state.style" :key="index"
+              @click="goItemMusic(item.id)">
               <img :src="item.coverImgUrl" alt="">
             </div>
           </div>
         </van-tab>
         <van-tab class="top-sort" title="全球榜">
           <div class="top-sort-title">
-            <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+            <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-yinle1"></use>
             </svg>
             <div class="title-name">全球榜</div>
           </div>
           <div class="square">
-            <div class="top-sort-content" v-for="(item, index) in state.global" :key="index">
+            <div class="top-sort-content" v-for="(item, index) in state.global" :key="index"
+              @click="goItemMusic(item.id)">
               <img :src="item.coverImgUrl" alt="">
             </div>
           </div>
         </van-tab>
         <van-tab class="top-sort" title="语种榜">
           <div class="top-sort-title">
-            <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+            <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-yinle1"></use>
             </svg>
             <div class="title-name">语种榜</div>
           </div>
           <div class="square">
-            <div class="top-sort-content" v-for="(item, index) in state.language" :key="index">
+            <div class="top-sort-content" v-for="(item, index) in state.language" :key="index"
+              @click="goItemMusic(item.id)">
               <img :src="item.coverImgUrl" alt="">
             </div>
           </div>
@@ -98,11 +102,19 @@ import { ref } from 'vue';
 import { getPlaylistClassify } from '@/request/api/Item'
 import { getMusicList } from '@/request/api/home'
 import { onMounted, reactive } from '@vue/runtime-core'
+import { useStore } from 'vuex';
+import router from '@/router';
 
 export default {
   setup() {
+    const store = useStore()
     const active = ref(0);
     const onClickLeft = () => history.back();
+    const goItemMusic = (id) => {
+      store.dispatch('getItemMusicPlaylist', id)
+      store.dispatch('getItemMusicItemList', id)
+      router.push('/itemMusic')
+    }
     const state = reactive({
       topSort: [],//官方榜
       squareL: [],//精选榜
@@ -128,13 +140,13 @@ export default {
         state.language = res.list.filter(item => {
           return item.id == '745956260' || item.id == '5059644681' || item.id == '6732051320' || item.id == '6732014811' || item.id == '7095271308'
         })
-        for (let i = 0; i < res.list.length; i++) {
-          console.log(i, res.list[i].id, res.list[i].name);
-        }
-        console.log(res.list);
+        // for (let i = 0; i < res.list.length; i++) {
+        //   console.log(i, res.list[i].id, res.list[i].name);
+        // }
+        // console.log(res.list);
       }
     )
-    return { state, onClickLeft, active };
+    return { state, onClickLeft, active, goItemMusic };
   },
 }
 </script>

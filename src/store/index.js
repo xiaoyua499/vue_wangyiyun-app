@@ -1,5 +1,5 @@
-import { getPhoneLogin } from '@/request/api/home'
-import { getmusicLyric } from '@/request/api/Item'
+import { getPhoneLogin  } from '@/request/api/home'
+import { getmusicLyric, getMusicItemList, getItemList } from '@/request/api/Item'
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -34,17 +34,19 @@ export default createStore({
       }
     },
     //排行榜数据
-    topSort: []
-
-  },
-  getters: {
+    topSort: [],
+    //歌曲推荐列表
+    itemMusic: [{
+      playlist: {}, //歌单详情
+      itemList: {}, // 歌曲详情
+    }]
   },
   mutations: {
     //更新排行榜数据
     updataTopSort(state, value) {
       state.topSort = value
       sessionStorage.setItem('topSort', JSON.stringify(state.topSort))
-      console.log(state.topSort);
+      // console.log(state.topSort);
     },
     // 播放按钮是否显示
     updateIsbtnShow(state, value) {
@@ -104,7 +106,20 @@ export default createStore({
       sessionStorage.setItem('user', JSON.stringify(state.user))
       // console.log(state.user);
     },
-
+    //歌曲推荐列表
+    updataItemMusicPlaylist(state, value) {
+      state.itemMusic.playlist = value
+      // console.log(value);
+      //防止页面刷新,数据丢失
+      sessionStorage.setItem('playlist', JSON.stringify(state.itemMusic.playlist))
+    },
+    //歌曲推荐列表详情
+    updataItemMusicItemList(state, value) {
+      state.itemMusic.itemList = value
+      // console.log(value);
+      //防止页面刷新,数据丢失
+      sessionStorage.setItem('itemList', JSON.stringify(state.itemMusic.itemList))
+    },
   },
   actions: {
     //歌词
@@ -118,6 +133,18 @@ export default createStore({
       let res = await getPhoneLogin(value)
       // console.log(res);
       return res
+    },
+    //获取推荐歌曲列表
+    getItemMusicPlaylist: async function (context, value) {
+      let res = await getMusicItemList(value)
+      // console.log(res.data.playlist);
+      context.commit("updataItemMusicPlaylist", res.data.playlist)
+    },
+    //获取推荐歌曲列表详情
+    getItemMusicItemList: async function (context, value) {
+      let res = await getItemList(value)
+      // console.log(res.data.songs);
+      context.commit("updataItemMusicItemList", res.data.songs)
     },
   },
   modules: {
