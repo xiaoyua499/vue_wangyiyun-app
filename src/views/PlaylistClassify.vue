@@ -111,8 +111,10 @@ export default {
     const active = ref(0);
     const onClickLeft = () => history.back();
     const goItemMusic = (id) => {
-      store.dispatch('getItemMusicPlaylist', id)
-      store.dispatch('getItemMusicItemList', id)
+      //获取歌单详情
+      store.dispatch('getPlaylistDetails', id)
+      //获取歌曲详情
+      store.dispatch('getSongsDetails', id)
       router.push('/itemMusic')
     }
     const state = reactive({

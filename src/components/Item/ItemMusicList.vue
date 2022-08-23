@@ -9,7 +9,7 @@
       <!-- 播放全部 -->
       <div class="allPlay">
         <span>播放全部</span>
-        <div>(共{{ itemMusic.itemList.length }}首)</div>
+        <div>(共{{ songs.length }}首)</div>
       </div>
       <!-- 收藏 -->
       <div class="collect">
@@ -17,14 +17,14 @@
           <use xlink:href="#icon-jiahao-copy"></use>
         </svg>
         <span>收藏</span>
-        <div>({{ itemMusic.playlist.subscribedCount }})</div>
+        <div>({{ playlist.subscribedCount }})</div>
       </div>
     </div>
 
     <!-- 列表底部 -->
     <div class="listBottom">
       <ul>
-        <li v-for="(item, index, id) in itemMusic.itemList" :key="id">
+        <li v-for="(item, index, id) in songs" :key="id">
           <span class="index">{{ index + 1 }}</span>
           <div class="song" @click="playMusic(index)">
             <span class="songName">{{ item.name }}</span>
@@ -49,16 +49,40 @@
 <script>
 import { mapMutations, mapState } from 'vuex';
 export default {
+  data() {
+    return {
+      playlist: {},
+      songs: {}
+    }
+  },
+  created() {
+    this.getPlsylist()
+
+  },
   computed: {
-    ...mapState(['itemMusic'])
+    //获取歌单详情与歌曲详情
+    ...mapState(['songsDetails', 'playlistDetails'])
   },
   methods: {
     playMusic(index) {
-      this.updatePlayList(this.itemMusic.itemList)
+      this.updatePlayList(this.songsDetails)
       this.updatePlayListIndex(index)
     },
+    getPlsylist() {
+      this.playlist = this.playlistDetails
+      this.songs = this.songsDetails
+      if (Object.keys(this.playlist).length == 0) {
+        this.playlist = JSON.parse(sessionStorage.getItem('playlistDetails'))
+      }
+      if (Object.keys(this.songs).length == 0) {
+        this.songs = JSON.parse(sessionStorage.getItem('songsDetails'))
+      }
+      // console.log(this.playlist);
+      // console.log(Object.keys(this.playlist).length);
+      // console.log(this.playlist);
+    },
     ...mapMutations(['updatePlayList', 'updatePlayListIndex'])
-  }
+  },
 }
 </script>
 

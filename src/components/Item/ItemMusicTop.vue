@@ -1,6 +1,6 @@
 <template>
   <div class="itemMusicTop">
-    <img :src="itemMusic.playlist.coverImgUrl" alt="" class="bgimg">
+    <img :src="playlist.coverImgUrl" alt="" class="bgimg">
     <div class="itemLeft">
       <svg class="icon" aria-hidden="true" @click="$router.go(-1)">
         <use xlink:href="#icon-zuojiantou"></use>
@@ -19,19 +19,19 @@
   <div class="itemMusicCenter">
     <div class="itemTop">
       <div class="cover">
-        <img :src="itemMusic.playlist.coverImgUrl" alt="">
+        <img :src="playlist.coverImgUrl" alt="">
       </div>
       <div class="details">
-        <span class="detailsTop">{{ itemMusic.playlist.name }}</span>
+        <span class="detailsTop">{{ playlist.name }}</span>
         <div class="detailsCenter">
-          <img :src="itemMusic.playlist.creator.backgroundUrl" alt="">
-          <span>{{ itemMusic.playlist.creator.nickname }}</span>
+          <img :src="playlist.creator.backgroundUrl" alt="">
+          <span>{{ playlist.creator.nickname }}</span>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-youjiantou"></use>
           </svg>
         </div>
         <div class="detailsBottom">
-          <span>{{ itemMusic.playlist.creator.signature }}</span>
+          <span>{{ playlist.creator.signature }}</span>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-youjiantou"></use>
           </svg>
@@ -45,13 +45,13 @@
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-xiaoxi"></use>
         </svg>
-        <span>{{ itemMusic.playlist.playCount }}</span>
+        <span>{{ playlist.playCount }}</span>
       </li>
       <li>
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-fenxiang"></use>
         </svg>
-        <span>{{ itemMusic.playlist.shareCount }}</span>
+        <span>{{ playlist.shareCount }}</span>
       </li>
       <li>
         <svg class="icon" aria-hidden="true">
@@ -70,31 +70,35 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { computed } from '@vue/runtime-core'
+import { mapState, useStore } from 'vuex'
 export default {
   data() {
     return {
-      playList: {}
+      playlist: {}
     }
   },
+  created() {
+    this.getPlsylist()
+
+    // console.log(this.playlist);
+    // console.log(Object.keys(this.playlist).length);
+  },
   computed: {
-    ...mapState(['itemMusic'])
+    //获取歌单详情
+    ...mapState(['playlistDetails'])
+  },
+  watch:{
+    
   },
   methods: {
-    // getData() {
-    //   this.playList = this.itemMusic.playlist
-    //   // this.playList.creator = this.itemMusic.playList.creator
-    //   if (this.playList.creator == '') {
-    //     this.playList.creator = JSON.parse(sessionStorage.getItem('playlist')).creator
-    //   }
-    //   console.log(this.playList);
-    //   console.log(JSON.parse(sessionStorage.getItem('playlist')).creator);
-    // },
-
-  },
-  mounted() {
-    // this.playList=this.$store.state.itemMusic.playList
-    // this.getData()
+    getPlsylist() {
+      this.playlist = this.playlistDetails
+      if (Object.keys(this.playlist).length == 0) {
+        this.playlist = JSON.parse(sessionStorage.getItem('playlistDetails'))
+      }
+      // console.log(this.playlist);
+    }
   }
 }
 </script>

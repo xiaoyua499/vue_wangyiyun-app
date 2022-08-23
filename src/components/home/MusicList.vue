@@ -7,7 +7,7 @@
     <div class="MusicContent">
       <van-swipe :loop="false" :width="125" :show-indicators="false" class="my-swpie">
         <van-swipe-item v-for="(item, id) in state.MusicList" :key="id" class="item">
-          <router-link :to="{ path: '/ItemMusic'}" @click="getRecommended(item.id)">
+          <router-link :to="{ path: '/ItemMusic' }" @click="getRecommended(item.id)">
             <img :src="item.picUrl" alt="">
             <span class="playCount">
               <svg class="icon" aria-hidden="true">
@@ -27,7 +27,9 @@
 
 <script>
 import { getMusicList } from '@/request/api/home'
+import { getMusicItemList, getItemList } from '@/request/api/Item'
 import { reactive, onMounted } from 'vue'
+import { mapMutations } from 'vuex'
 export default {
   setup() {
     const state = reactive({
@@ -51,10 +53,16 @@ export default {
     return { state, changeCount }
   },
   methods: {
+    ...mapMutations(['updataPlaylistDetails', 'updataSongsDetails']),
     //获取推荐歌曲列表
-    getRecommended(id){
-      this.$store.dispatch('getItemMusicPlaylist',id)
-      this.$store.dispatch('getItemMusicItemList',id)
+    async getRecommended(id) {
+      //获取歌单详情
+      let res = await getMusicItemList(id)
+      this.updataPlaylistDetails(res.data.playlist)
+      //获取歌曲详情
+      let result = await getItemList(id)
+      this.updataSongsDetails(result.data.songs)
+      // console.log(result.data.song);
     }
   },
 }
