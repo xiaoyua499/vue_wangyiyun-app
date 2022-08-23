@@ -1,4 +1,4 @@
-import { getPhoneLogin  } from '@/request/api/home'
+import { getPhoneLogin } from '@/request/api/home'
 import { getmusicLyric, getMusicItemList, getItemList } from '@/request/api/Item'
 import { createStore } from 'vuex'
 
@@ -35,11 +35,8 @@ export default createStore({
     },
     //排行榜数据
     topSort: [],
-    //歌曲推荐列表
-    itemMusic: [{
-      playlist: {}, //歌单详情
-      itemList: {}, // 歌曲详情
-    }]
+    songsDetails:{},//歌曲详情
+    playlistDetails:{}//歌单详情
   },
   mutations: {
     //更新排行榜数据
@@ -106,20 +103,21 @@ export default createStore({
       sessionStorage.setItem('user', JSON.stringify(state.user))
       // console.log(state.user);
     },
-    //歌曲推荐列表
-    updataItemMusicPlaylist(state, value) {
-      state.itemMusic.playlist = value
+    //更新歌曲详情
+    updataSongsDetails(state, value) {
+      state.songsDetails = value
       // console.log(value);
       //防止页面刷新,数据丢失
-      sessionStorage.setItem('playlist', JSON.stringify(state.itemMusic.playlist))
+      sessionStorage.setItem('songsDetails', JSON.stringify(value))
     },
-    //歌曲推荐列表详情
-    updataItemMusicItemList(state, value) {
-      state.itemMusic.itemList = value
+    //更新歌单详情
+    updataPlaylistDetails(state, value) {
+      state.playlistDetails = value
       // console.log(value);
       //防止页面刷新,数据丢失
-      sessionStorage.setItem('itemList', JSON.stringify(state.itemMusic.itemList))
+      sessionStorage.setItem('playlistDetails', JSON.stringify(value))
     },
+    
   },
   actions: {
     //歌词
@@ -134,18 +132,16 @@ export default createStore({
       // console.log(res);
       return res
     },
-    //获取推荐歌曲列表
-    getItemMusicPlaylist: async function (context, value) {
+    //获取歌单详情
+    getPlaylistDetails: async function (context, value) {
       let res = await getMusicItemList(value)
-      // console.log(res.data.playlist);
-      context.commit("updataItemMusicPlaylist", res.data.playlist)
+      context.commit("updataPlaylistDetails", res.data.playlist)
     },
-    //获取推荐歌曲列表详情
-    getItemMusicItemList: async function (context, value) {
+    //获取歌曲详情
+    getSongsDetails: async function (context, value) {
       let res = await getItemList(value)
-      // console.log(res.data.songs);
-      context.commit("updataItemMusicItemList", res.data.songs)
-    },
+      context.commit("updataSongsDetails", res.data.songs)
+    }
   },
   modules: {
   }

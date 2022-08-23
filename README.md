@@ -119,7 +119,7 @@ Github地址：https://github.com/Binaryify/NeteaseCloudMusicApi
 
 - [x] 歌单列表页面
   - [x] 解决歌单列表首次加载数据失败问题
-  - [ ] 解决歌单别表刷新后数据丢失问题
+  - [x] 解决歌单别表刷新后数据丢失问题
 
 
 
