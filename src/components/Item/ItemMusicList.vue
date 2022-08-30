@@ -77,9 +77,6 @@ export default {
       if (Object.keys(this.songs).length == 0) {
         this.songs = JSON.parse(sessionStorage.getItem('songsDetails'))
       }
-      // console.log(this.playlist);
-      // console.log(Object.keys(this.playlist).length);
-      // console.log(this.playlist);
     },
     ...mapMutations(['updatePlayList', 'updatePlayListIndex'])
   },

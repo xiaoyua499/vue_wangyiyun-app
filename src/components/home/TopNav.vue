@@ -21,23 +21,17 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
 //注册Sidebar侧边栏组件
 import Sidebar from '@/components/home/Sidebar';
-import { ref } from 'vue';
 export default {
   components: { Sidebar },
-
   data() {
     return {
       sidebarShow: false,
     };
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
-
     //是否显示侧边栏
     updataSidebarShow() {
       this.sidebarShow = !this.sidebarShow

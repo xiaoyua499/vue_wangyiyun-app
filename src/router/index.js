@@ -48,6 +48,11 @@ const routes = [
     },
     component: () => import(/* webpackChunkName: "InfoUser" */ '../views/InfoUser.vue')
   },
+  {
+    path: '/sidebar',
+    name: 'Sidebar',
+    component: () => import(/* webpackChunkName: "InfoUser" */ '../components/home/Sidebar.vue')
+  }
 ]
 
 const router = createRouter({
